@@ -13,26 +13,25 @@ public class MainMenu {
     private static final HotelResource hotelResource = HotelResource.hotelResource;
 
     public static void menu() {
-        try (Scanner scanner = new Scanner(System.in)) {
+        String userInput;
+        Scanner scanner = new Scanner(System.in);
+        try {
             do {
                 System.out.println("1. Find and reserve a room");
                 System.out.println("2. See my reservations");
                 System.out.println("3. Create an account");
                 System.out.println("4. Admin");
                 System.out.println("5. Exit");
-                String userInput = scanner.nextLine();
+                userInput = scanner.nextLine();
                 switch (userInput) {
                     case "1" -> reserveARoom(scanner);
                     case "2" -> getCustomerReservations(scanner);
-                    case "3" -> createCustomer(scanner);
+                    case "3" -> createCustomer();
                     case "4" -> AdminMenu.admin();
-                    case "5" -> {
-                        System.out.println("Exit");
-                        return;
-                    }
+                    case "5" -> System.out.println("Exit");
                     default -> System.out.println("Unknown input!");
                 }
-                System.out.println("User input: " + userInput);
+                System.out.println("Please press enter to return to the menu!");
             } while (!scanner.nextLine().equals("5"));
 
         } catch (IllegalArgumentException e) {
@@ -47,7 +46,7 @@ public class MainMenu {
         String customerRespond = scanner.nextLine();
         if (customerRespond.equals("n")) {
             System.out.println("Please create an account!");
-            createCustomer(scanner);
+            createCustomer();
         }
         System.out.println("Please enter your email address:");
         Customer customer = customerCheck(scanner);
@@ -95,7 +94,9 @@ public class MainMenu {
         }
     }
 
-    private static void createCustomer(Scanner scanner) {
+    private static void createCustomer() {
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("Create an Account");
         System.out.println("Please enter your first name:");
         String firstName = scanner.nextLine();

@@ -8,14 +8,16 @@ import java.util.Scanner;
 public class AdminMenu {
     private static final AdminResource adminResource = AdminResource.adminResource;
     public static void admin() {
-        try (Scanner scanner = new Scanner(System.in)) {
+        String userInput;
+        Scanner scanner = new Scanner(System.in);
+        try {
             do {
                 System.out.println("1. See all Customers");
                 System.out.println("2. See all Rooms");
                 System.out.println("3. See all Reservations");
                 System.out.println("4. Add a Room");
                 System.out.println("5. Back to Main Menu");
-                String userInput = scanner.nextLine();
+                userInput = scanner.nextLine();
                 switch (userInput) {
                     case "1" -> getAllCustomers();
                     case "2" -> getAllRooms();
@@ -24,7 +26,7 @@ public class AdminMenu {
                     case "5" -> MainMenu.menu();
                     default -> System.out.println("Unknown input!");
                 }
-                System.out.println("User input: " + userInput);
+                System.out.println("Please press enter return to the menu!");
             } while (!scanner.nextLine().equals("5"));
         } catch (IllegalArgumentException ex) {
             ex.getLocalizedMessage();
