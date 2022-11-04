@@ -13,15 +13,17 @@ public class MainMenu {
     private static final HotelResource hotelResource = HotelResource.hotelResource;
 
     public static void menu() {
-        String userInput;
+        String userInput = "";
         Scanner scanner = new Scanner(System.in);
         try {
-            do {
+            while (!userInput.equals("5")) {
+                System.out.println("-------------");
                 System.out.println("1. Find and reserve a room");
                 System.out.println("2. See my reservations");
                 System.out.println("3. Create an account");
                 System.out.println("4. Admin");
                 System.out.println("5. Exit");
+                System.out.println("Please select from menu!");
                 userInput = scanner.nextLine();
                 switch (userInput) {
                     case "1" -> reserveARoom(scanner);
@@ -31,9 +33,7 @@ public class MainMenu {
                     case "5" -> System.out.println("Exit");
                     default -> System.out.println("Unknown input!");
                 }
-                System.out.println("Please press enter to return to the menu!");
-            } while (!scanner.nextLine().equals("5"));
-
+            }
         } catch (IllegalArgumentException e) {
             e.getLocalizedMessage();
         } catch (ParseException e) {
@@ -106,8 +106,9 @@ public class MainMenu {
             System.out.println("Please enter your email:");
             String email = scanner.nextLine();
             HotelResource.hotelResource.createACustomer(email, firstName, lastName);
+            System.out.println("Account created successfully.");
         } catch (IllegalArgumentException ex) {
-            System.out.println("Invalid input");
+            System.out.println("Invalid input!");
         }
     }
 
