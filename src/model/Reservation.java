@@ -4,12 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Reservation {
-    Customer customer;
-    IRoom room;
-    Date checkInDate;
-    Date checkOutDate;
-
-
+    private final Customer customer;
+    private final IRoom room;
+    private final Date checkInDate;
+    private final Date checkOutDate;
 
     public Reservation(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
         this.customer = customer;
@@ -40,9 +38,11 @@ public class Reservation {
         String extractedCheckIn = formatter.format(checkInDate);
         String extractedCheckOut = formatter.format(checkOutDate);
 
-        return "Customer: " + customer + "\n" +
-                "  Room: " + room + "\n" +
-                "Check in date: " + extractedCheckIn +
+        return
+                "Reservation: " + "\n" +
+                "   Customer: " + customer + "\n" +
+                "   Room: " + room + "\n" +
+                "   Check in date: " + extractedCheckIn +
                 " Check out date: " + extractedCheckOut;
     }
 }
