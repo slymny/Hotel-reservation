@@ -7,9 +7,13 @@ import model.Reservation;
 import java.util.*;
 
 public class ReservationService {
-    public static final ReservationService reservationService = new ReservationService();
+    private static final ReservationService reservationService = new ReservationService();
     private static final List<Reservation> reservations = new ArrayList<>();
     private static final Map<String, IRoom> rooms = new HashMap<>();
+
+    public static ReservationService getInstance() {
+        return reservationService;
+    }
 
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
         List<IRoom> availableRooms = new ArrayList<>();
@@ -21,11 +25,9 @@ public class ReservationService {
         return availableRooms;
     }
 
-    public Collection<IRoom> recommendedRooms(Date checkInDate, Date checkOutDate) {
-        System.out.println("No room found in the given date!");
-        Date checkInRecommended = addDaysToDate(checkInDate, 7);
-        Date checkOutRecommended = addDaysToDate(checkOutDate, 7);
-        System.out.println("Recommended room for 7 days later: ");
+    public Collection<IRoom> recommendedRooms(Date checkInDate, Date checkOutDate, int addDays) {
+        Date checkInRecommended = addDaysToDate(checkInDate, addDays);
+        Date checkOutRecommended = addDaysToDate(checkOutDate, addDays);
         return findRooms(checkInRecommended, checkOutRecommended);
     }
 
@@ -53,10 +55,10 @@ public class ReservationService {
         return null;
     }
 
-    public Collection<Reservation> getCustomerReservations(Customer customer) {
+    public Collection<Reservation> getCustomerReservations(String customerEmail) {
         List<Reservation> reservationsOfCustomer = new ArrayList<>();
         for (Reservation reservation : reservations) {
-            if (reservation.getCustomer().getEmail().equals(customer.getEmail())) {
+            if (reservation.getCustomer().getEmail().equals(customerEmail)) {
                 reservationsOfCustomer.add(reservation);
             }
         }
@@ -64,23 +66,18 @@ public class ReservationService {
     }
 
     private boolean checkAvailability(IRoom room, Date checkInDate, Date checkOutDate) {
-        List<Reservation> reservationsOfTheRoom = new ArrayList<>();
         for (Reservation reservation : reservations) {
-            if (reservation.getRoom().equals(room)) {
-                reservationsOfTheRoom.add(reservation);
+            if (reservation.getRoom().getRoomNumber().equals(room.getRoomNumber())) {
+                Date checkIn = reservation.getCheckInDate();
+                Date checkOut = reservation.getCheckOutDate();
+                if (checkInDate.before(checkOut) && checkOutDate.after(checkIn)) {
+                    return false;
+                } else if (checkOutDate.equals(checkIn) || checkOutDate.equals(checkOut) || checkInDate.equals(checkIn) || checkInDate.equals(checkOut)) {
+                    return false;
+                }
             }
         }
-        if (reservationsOfTheRoom.isEmpty()) {
-            return true;
-        }
-        for (Reservation reservation : reservationsOfTheRoom) {
-            Date checkIn = reservation.getCheckInDate();
-            Date checkOut = reservation.getCheckOutDate();
-            if (checkInDate.after(checkOut) || checkOutDate.before(checkIn)) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
     public void printAllReservation() {
@@ -94,7 +91,7 @@ public class ReservationService {
 
     public void addRoom(IRoom room) {
         if (rooms.get(room.getRoomNumber()) != null) {
-            throw new IllegalArgumentException("Provided room already exists!");
+            throw new IllegalArgumentException("A room with the provided room number already exists!");
         }
         rooms.put(room.getRoomNumber(), room);
     }
