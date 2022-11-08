@@ -10,12 +10,18 @@ import java.util.Collection;
 import java.util.Date;
 
 public class HotelResource {
-    public static final HotelResource hotelResource = new HotelResource();
-    private static final ReservationService reservationService = ReservationService.reservationService;
-    private static final CustomerService customerService = CustomerService.customerService;
+    private static final HotelResource hotelResource = new HotelResource();
+    private static final ReservationService reservationService = ReservationService.getInstance();
+    private static final CustomerService customerService = CustomerService.getInstance();
+
+    public static HotelResource getInstance() {
+        return hotelResource;
+    }
 
     public Customer getCustomer(String email) {
-        return customerService.getCustomer(email);
+        Customer customer = customerService.getCustomer(email);
+        if(customer == null) throw new IllegalArgumentException("Invalid input!");
+        return customer;
     }
 
     public void createACustomer(String email, String firstName, String lastName) {
@@ -32,16 +38,15 @@ public class HotelResource {
     }
 
     public Collection<Reservation> getCustomersReservations(String customerEmail) {
-        Customer customer = getCustomer(customerEmail);
-        return reservationService.getCustomerReservations(customer);
+        return reservationService.getCustomerReservations(customerEmail);
     }
 
     public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
         return reservationService.findRooms(checkIn, checkOut);
     }
 
-    public Collection<IRoom> recommendRoom(Date checkIn, Date checkOut) {
-        return reservationService.recommendedRooms(checkIn, checkOut);
+    public Collection<IRoom> recommendRoom(Date checkIn, Date checkOut, int addDays) {
+        return reservationService.recommendedRooms(checkIn, checkOut, addDays);
     }
 
     public Date addDays(Date date, int day) {return reservationService.addDaysToDate(date, day);}
