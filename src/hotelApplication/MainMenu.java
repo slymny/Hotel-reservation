@@ -39,6 +39,9 @@ public class MainMenu {
                             System.out.println("Please first create an account!");
                             emailInput = createCustomerMenu(scanner);
                             if (emailInput == null) break;
+                        } else if(!customerRespond.equals("y")) {
+                            System.out.println("Error: Invalid input! Please try again.");
+                            break;
                         } else {
                             System.out.println("Please enter your email address:");
                             emailInput = scanner.nextLine();
@@ -93,7 +96,8 @@ public class MainMenu {
                     } else {
                         System.out.println("No room found!");
                     }
-                }
+                } else if (!customerRespond.equals("n"))
+                    throw new IllegalArgumentException("Error: Invalid input! Please try again.");
             } else {
                 System.out.println("Available rooms:");
                 createAReservation(scanner, customerEmail, dateIn, dateOut, availableRooms);
@@ -110,7 +114,7 @@ public class MainMenu {
         System.out.println("Please enter the room number which you want to reserve:");
         String roomNumber = scanner.nextLine();
         IRoom room = hotelResource.getRoom(roomNumber);
-        if (room == null) throw new IllegalArgumentException("Error: Invalid room number! Please try again.");
+        if(!rooms.contains(room) || room == null) throw new IllegalArgumentException("Error: Invalid room number! Please try again.");
         Reservation newReservation = hotelResource.bookARoom(customerEmail, room, dateIn, dateOut);
         System.out.println("Reservation successfully made: ");
         System.out.println(newReservation.toString());

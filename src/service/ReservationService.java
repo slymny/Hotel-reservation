@@ -65,14 +65,14 @@ public class ReservationService {
         return reservationsOfCustomer;
     }
 
-    private boolean checkAvailability(IRoom room, Date checkInDate, Date checkOutDate) {
+    boolean checkAvailability(IRoom room, Date checkInDate, Date checkOutDate) {
         for (Reservation reservation : reservations) {
             if (reservation.getRoom().getRoomNumber().equals(room.getRoomNumber())) {
                 Date checkIn = reservation.getCheckInDate();
                 Date checkOut = reservation.getCheckOutDate();
                 if (checkInDate.before(checkOut) && checkOutDate.after(checkIn)) {
                     return false;
-                } else if (checkOutDate.equals(checkIn) || checkOutDate.equals(checkOut) || checkInDate.equals(checkIn) || checkInDate.equals(checkOut)) {
+                } else if (checkOutDate.equals(checkOut) || checkInDate.equals(checkIn)) {
                     return false;
                 }
             }
