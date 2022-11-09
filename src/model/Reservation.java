@@ -2,6 +2,7 @@ package model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class Reservation {
     private final Customer customer;
@@ -33,6 +34,21 @@ public class Reservation {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Reservation that)) return false;
+        return getCustomer().equals(that.getCustomer())
+                && getRoom().equals(that.getRoom())
+                && getCheckInDate().equals(that.getCheckInDate())
+                && getCheckOutDate().equals(that.getCheckOutDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCustomer(), getRoom(), getCheckInDate(), getCheckOutDate());
+    }
+
+    @Override
     public String toString() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String extractedCheckIn = formatter.format(checkInDate);
@@ -40,9 +56,9 @@ public class Reservation {
 
         return
                 "Reservation: " + "\n" +
-                "   Customer: " + customer + "\n" +
-                "   Room: " + room + "\n" +
-                "   Check in date: " + extractedCheckIn +
-                " Check out date: " + extractedCheckOut;
+                        "   Customer: " + customer + "\n" +
+                        "   Room: " + room + "\n" +
+                        "   Check in date: " + extractedCheckIn +
+                        " Check out date: " + extractedCheckOut;
     }
 }
