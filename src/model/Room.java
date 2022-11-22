@@ -1,9 +1,11 @@
 package model;
 
+import java.util.Objects;
+
 public class Room implements IRoom {
-    String roomNumber;
-    Double price;
-    RoomType roomType;
+    private final String roomNumber;
+    private final Double price;
+    private final RoomType roomType;
 
     public Room(String roomNumber, Double price, RoomType roomType) {
         this.roomType = roomType;
@@ -27,14 +29,28 @@ public class Room implements IRoom {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Room room)) return false;
+        return getRoomNumber().equals(room.getRoomNumber()) && price.equals(room.price) && getRoomType() == room.getRoomType();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRoomNumber(), price, getRoomType());
+    }
+
+    @Override
     public boolean isFree() {
         return false;
     }
 
     @Override
     public String toString() {
-        return "Room: " + roomNumber +
-            "  Price: " + price + " $   " +
-            "Room type: " + roomType;
+        return "Room{" +
+                "roomNumber=" + roomNumber +
+                ", price=" + price + " Euro " +
+                ", roomType=" + roomType +
+                '}';
     }
 }

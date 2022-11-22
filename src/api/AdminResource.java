@@ -9,8 +9,8 @@ import java.util.Collection;
 
 public class AdminResource {
     public static final AdminResource adminResource = new AdminResource();
-    private static final ReservationService reservationService = ReservationService.reservationService;
-    private static final CustomerService customerService = CustomerService.customerService;
+    private static final ReservationService reservationService = ReservationService.getInstance();
+    private static final CustomerService customerService = CustomerService.getInstance();
 
     public void addRoom(IRoom room) {
             reservationService.addRoom(room);

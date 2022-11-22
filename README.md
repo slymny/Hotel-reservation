@@ -1,5 +1,9 @@
 # Hotel Reservation application 
-An application for Udacity Java Programming.
+An application for Udacity Java Programming. 
+
+To run the application, run HotelApplication main method. Then follow the menu.
+
+In the Admin menu you can create test data with the menu option "6".
 
 ## User Scenarios
 The application provides four user scenarios:
